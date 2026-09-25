@@ -1,2 +1,16 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #090b0e;
+  color: white;
+}
+
+* {
+  box-sizing: border-box;
+}
