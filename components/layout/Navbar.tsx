@@ -1,61 +1,97 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { Dumbbell, Search } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  return (
-    <header className="border-b border-white/10 bg-[#0b0d10]">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-6">
-        
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Dumbbell className="h-4 w-4 text-[#ccff00]" />
+  const pathname = usePathname();
 
-          <span className="text-sm font-bold tracking-wider text-white">
-            FITLOG
-          </span>
-        </Link>
+  const isWorkoutsActive =
+    pathname === "/" || pathname.startsWith("/workouts");
+
+  const isPlanActive = pathname.startsWith("/my-plan");
+
+  return (
+    <header className="border-b border-white/10 bg-[#090b0e]">
+      <nav className="navbar mx-auto h-16 max-w-7xl px-5 sm:px-8">
+
+        {/* Logo */}
+        <div className="navbar-start">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="FitLog"
+              width={24}
+              height={24}
+              className="h-6 w-6 object-contain"
+              priority
+            />
+
+            <span className="text-sm font-bold tracking-[0.18em] text-white">
+              FITLOG
+            </span>
+          </Link>
+        </div>
 
         {/* Navigation */}
-        <div className="hidden items-center gap-2 sm:flex">
-          <Link
-            href="/"
-            className="rounded-full px-4 py-2 text-xs font-medium text-white/60 transition hover:text-white"
-          >
-            Workouts
-          </Link>
+        <div className="navbar-center">
+          <div className="flex items-center gap-1">
+            <Link
+              href="/"
+              className={`btn btn-sm rounded-full border-0 px-5 text-xs font-semibold uppercase tracking-wider ${
+                isWorkoutsActive
+                  ? "bg-[#ccff00] text-black hover:bg-[#ccff00]"
+                  : "bg-transparent text-white/50 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              Workouts
+            </Link>
 
-          <Link
-            href="/my-plan"
-            className="rounded-full px-4 py-2 text-xs font-medium text-white/60 transition hover:text-white"
-          >
-            My Plan
-          </Link>
+            <Link
+              href="/my-plan"
+              className={`btn btn-sm rounded-full border-0 px-5 text-xs font-semibold uppercase tracking-wider ${
+                isPlanActive
+                  ? "bg-[#ccff00] text-black hover:bg-[#ccff00]"
+                  : "bg-transparent text-white/50 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              My Plan
+            </Link>
+          </div>
         </div>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2">
-          <Link
-            href="/my-plan"
-            className="rounded-full bg-[#ccff00] px-3 py-1.5 text-[10px] font-bold uppercase text-black"
-          >
-            Plan <span className="ml-1">0</span>
-          </Link>
+        {/* Counters */}
+        <div className="navbar-end">
+          <div className="flex items-center gap-5">
 
-          <Link
-            href="/my-plan"
-            className="rounded-full border border-white/20 px-3 py-1.5 text-[10px] font-bold uppercase text-white"
-          >
-            Saved <span className="ml-1">0</span>
-          </Link>
+            {/* Plan Counter */}
+            <Link
+              href="/my-plan"
+              className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white/60 transition hover:text-white"
+            >
+              <span>Plan</span>
 
-          <button
-            type="button"
-            className="hidden p-2 text-white/60 transition hover:text-white sm:block"
-            aria-label="Search"
-          >
-            <Search className="h-4 w-4" />
-          </button>
+              <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#ccff00] px-2 font-bold text-black">
+                0
+              </span>
+            </Link>
+
+            {/* Saved Counter */}
+            <Link
+              href="/my-plan"
+              className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white/60 transition hover:text-white"
+            >
+              <span>Saved</span>
+
+              <span className="flex h-6 min-w-6 items-center justify-center rounded-full border border-white/20 px-2 font-bold text-white/70">
+                0
+              </span>
+            </Link>
+
+          </div>
         </div>
+
       </nav>
     </header>
   );
