@@ -1,35 +1,58 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { Clock, Flame, Star } from "lucide-react";
+import { Workout } from "@/types/workout";
 
-const WorkoutCard = () => {
+interface WorkoutCardProps {
+  workout: Workout;
+}
+
+const WorkoutCard = ({ workout }: WorkoutCardProps) => {
   return (
-    <article className="group rounded-2xl border border-white/10 bg-[#11151a] p-5 transition hover:border-white/20">
-      <div className="mb-6 flex h-40 items-center justify-center rounded-xl bg-[#151a20]">
-        <span className="text-4xl font-black uppercase text-white/10">
-          FIT
-        </span>
+    <Link
+      href={`/workouts/${workout.id}`}
+      className="group block overflow-hidden rounded-2xl border border-white/10 bg-[#11151a] transition hover:border-white/20"
+    >
+      <div className="relative h-48 bg-[#151a20]">
+        <Image
+          src={workout.image}
+          alt={workout.name}
+          fill
+          className="object-cover transition duration-300 group-hover:scale-105"
+        />
       </div>
 
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#ccff00]">
-        Chest
-      </p>
+      <div className="p-5">
+        <div className="flex flex-wrap gap-1.5">
+          {workout.muscleGroups.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-[#ccff00]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#ccff00]"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-      <h3 className="mt-2 text-lg font-bold text-white">
-        Bench Press
-      </h3>
+        <h3 className="mt-3 text-lg font-bold uppercase text-white">
+          {workout.name}
+        </h3>
 
-      <p className="mt-2 text-sm text-white/40">
-        Barbell • Compound
-      </p>
+        <p className="mt-1 text-sm text-white/40">{workout.equipment}</p>
 
-      <Link
-        href="/workouts/bench-press"
-        className="btn btn-sm mt-5 w-full rounded-full border-0 bg-white/5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-[#ccff00] hover:text-black"
-      >
-        View Workout
-        <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-    </article>
+        <div className="mt-4 flex items-center gap-4 text-xs text-white/50">
+          <span className="flex items-center gap-1">
+            <Clock className="h-3.5 w-3.5" /> {workout.duration} min
+          </span>
+          <span className="flex items-center gap-1">
+            <Flame className="h-3.5 w-3.5" /> {workout.caloriesBurned} kcal
+          </span>
+          <span className="flex items-center gap-1">
+            <Star className="h-3.5 w-3.5" /> {workout.rating}
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 };
 
