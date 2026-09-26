@@ -1,17 +1,25 @@
 import { Dumbbell } from "lucide-react";
 import Link from "next/link";
 
-const EmptyPlan = () => {
+interface EmptyPlanProps {
+  type: "plan" | "saved";
+}
+
+const EmptyPlan = ({ type }: EmptyPlanProps) => {
+  const isPlan = type === "plan";
+
   return (
     <div className="rounded-3xl border border-dashed border-white/10 bg-[#11151a] px-6 py-16 text-center">
       <Dumbbell className="mx-auto h-8 w-8 text-white/20" />
 
       <h3 className="mt-5 text-lg font-bold uppercase text-white">
-        Nothing Here Yet
+        {isPlan ? "Nothing Here Yet" : "Nothing Saved Yet"}
       </h3>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-white/40">
-        Browse the library and add a lift to get today moving.
+        {isPlan
+          ? "Browse the library and add a lift to get today moving."
+          : "Save workouts you want to come back to later."}
       </p>
 
       <Link

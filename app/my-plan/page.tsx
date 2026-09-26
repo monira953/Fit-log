@@ -13,13 +13,8 @@ const MyPlanPage = () => {
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
   const [sortBy, setSortBy] = useState<SortOption>("Duration");
 
-  const {
-  plan,
-  saved,
-  removeFromPlan,
-  removeFromSaved,
-  markDone,
-} = useFitLog();
+  const { plan, saved, removeFromPlan, removeFromSaved, markDone } =
+    useFitLog();
 
   const currentWorkouts = useMemo(() => {
     const workouts = activeTab === "plan" ? plan : saved;
@@ -107,11 +102,12 @@ const MyPlanPage = () => {
           {currentWorkouts.length === 0 ? (
             <EmptyPlan type={activeTab} />
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="rounded-2xl border border-white/10 bg-[#11151a] px-5">
               {currentWorkouts.map((workout) => (
                 <PlanWorkoutCard
                   key={workout.id}
                   workout={workout}
+                  showMarkDone={activeTab === "plan"}
                   onRemove={handleRemove}
                   onMarkDone={markDone}
                 />
