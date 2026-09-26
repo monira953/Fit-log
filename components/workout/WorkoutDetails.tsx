@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { PlusCircle, Bookmark, Check } from "lucide-react";
+import { toast } from "react-toastify";
 import { Workout } from "@/types/workout";
 import WorkoutStats from "./WorkoutStats";
 import { useFitLog } from "@/context/FitLogContext";
@@ -22,11 +23,17 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
   const savedForLater = isSaved(workout.id);
 
   const handleAddToPlan = () => {
+    if (addedToPlan) return;
+
     addToPlan(workout);
+    toast.success("Added to today's plan!");
   };
 
   const handleSaveForLater = () => {
+    if (savedForLater) return;
+
     saveForLater(workout);
+    toast.success("Saved for later!");
   };
 
   return (

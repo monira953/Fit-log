@@ -34,7 +34,7 @@ const WorkoutFilters = ({
       </label>
 
       {/* Sort By */}
-      <div className="dropdown dropdown-end">
+      <div className="dropdown dropdown-start">
         <button
           tabIndex={0}
           className="btn flex rounded-full border-white/10 bg-[#11151a] text-xs font-semibold uppercase tracking-wider text-white/70 hover:bg-[#181d23]"

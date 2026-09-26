@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import PlanMetrics from "@/components/my-plan/PlanMetrics";
 import PlanTabs from "@/components/my-plan/PlanTabs";
 import PlanWorkoutCard from "@/components/my-plan/PlanWorkoutCard";
@@ -38,6 +39,13 @@ const MyPlanPage = () => {
     } else {
       removeFromSaved(id);
     }
+
+    toast.success("Workout removed!");
+  };
+
+  const handleMarkDone = (id: number) => {
+    markDone(id);
+    toast.success("Workout marked as done!");
   };
 
   return (
@@ -109,7 +117,7 @@ const MyPlanPage = () => {
                   workout={workout}
                   showMarkDone={activeTab === "plan"}
                   onRemove={handleRemove}
-                  onMarkDone={markDone}
+                  onMarkDone={handleMarkDone}
                 />
               ))}
             </div>
