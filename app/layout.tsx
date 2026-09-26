@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { FitLogProvider } from "@/context/FitLogContext";
 
 export const metadata: Metadata = {
   title: "FitLog — Workout Library",
@@ -18,11 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-[#090b0e] text-white">
-        <Navbar />
-
-        <main>{children}</main>
-
-        <Footer />
+        <FitLogProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </FitLogProvider>
       </body>
     </html>
   );

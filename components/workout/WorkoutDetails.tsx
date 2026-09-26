@@ -1,21 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { PlusCircle, Bookmark } from "lucide-react";
+import { PlusCircle, Bookmark, Check } from "lucide-react";
 import { Workout } from "@/types/workout";
 import WorkoutStats from "./WorkoutStats";
+import { useFitLog } from "@/context/FitLogContext";
 
 interface WorkoutDetailsProps {
   workout: Workout;
 }
 
 const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
+  const {
+    addToPlan,
+    saveForLater,
+    isInPlan,
+    isSaved,
+  } = useFitLog();
+
+  const addedToPlan = isInPlan(workout.id);
+  const savedForLater = isSaved(workout.id);
+
   const handleAddToPlan = () => {
-    // TODO: wire to FitLogContext + toast
+    addToPlan(workout);
   };
 
   const handleSaveForLater = () => {
-    // TODO: wire to FitLogContext + toast
+    saveForLater(workout);
   };
 
   return (
@@ -62,18 +73,28 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
             <div className="mt-8 flex flex-wrap gap-3">
               <button
                 onClick={handleAddToPlan}
-                className="btn gap-2 rounded-full border-0 bg-[#ccff00] px-6 text-xs font-bold uppercase tracking-wider text-black hover:bg-[#ccff00]"
+                disabled={addedToPlan}
+                className="btn gap-2 rounded-full border-0 bg-[#ccff00] px-6 text-xs font-bold uppercase tracking-wider text-black hover:bg-[#ccff00] disabled:bg-[#ccff00] disabled:text-black disabled:opacity-100"
               >
-                <PlusCircle className="h-4 w-4" />
-                Add to Today&apos;s Plan
+                {addedToPlan ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <PlusCircle className="h-4 w-4" />
+                )}
+                {addedToPlan ? "Added to Plan" : "Add to Today's Plan"}
               </button>
 
               <button
                 onClick={handleSaveForLater}
-                className="btn btn-outline gap-2 rounded-full border-white/30 px-6 text-xs font-bold uppercase tracking-wider text-white hover:border-white hover:bg-white hover:text-black"
+                disabled={savedForLater}
+                className="btn btn-outline gap-2 rounded-full border-white/30 px-6 text-xs font-bold uppercase tracking-wider text-white hover:border-white hover:bg-white hover:text-black disabled:border-[#ccff00] disabled:bg-transparent disabled:text-[#ccff00] disabled:opacity-100"
               >
-                <Bookmark className="h-4 w-4" />
-                Save for Later
+                {savedForLater ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Bookmark className="h-4 w-4" />
+                )}
+                {savedForLater ? "Saved" : "Save for Later"}
               </button>
             </div>
           </div>
@@ -94,6 +115,7 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ccff00] text-xs font-black text-black">
                   {index + 1}
                 </span>
+
                 <p className="pt-1 text-sm leading-6 text-white/60">
                   {instruction}
                 </p>
