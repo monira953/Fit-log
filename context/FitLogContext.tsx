@@ -6,12 +6,15 @@ import { Workout } from "@/types/workout";
 interface FitLogContextType {
   plan: Workout[];
   saved: Workout[];
+  completed: Workout[];
   addToPlan: (workout: Workout) => void;
   removeFromPlan: (id: number) => void;
   saveForLater: (workout: Workout) => void;
   removeFromSaved: (id: number) => void;
+  markDone: (id: number) => void;
   isInPlan: (id: number) => boolean;
   isSaved: (id: number) => boolean;
+  isCompleted: (id: number) => boolean;
 }
 
 const FitLogContext = createContext<FitLogContextType | undefined>(
@@ -25,6 +28,7 @@ export const FitLogProvider = ({
 }) => {
   const [plan, setPlan] = useState<Workout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
+  const [completed, setCompleted] = useState<Workout[]>([]);
 
   const addToPlan = (workout: Workout) => {
     setPlan((current) =>
@@ -50,6 +54,20 @@ export const FitLogProvider = ({
     setSaved((current) => current.filter((workout) => workout.id !== id));
   };
 
+  const markDone = (id: number) => {
+    setPlan((current) => {
+      const workout = current.find((item) => item.id === id);
+
+      if (!workout) return current;
+
+      setCompleted((done) =>
+        done.some((item) => item.id === id) ? done : [...done, workout],
+      );
+
+      return current.filter((item) => item.id !== id);
+    });
+  };
+
   const isInPlan = (id: number) => {
     return plan.some((workout) => workout.id === id);
   };
@@ -58,18 +76,25 @@ export const FitLogProvider = ({
     return saved.some((workout) => workout.id === id);
   };
 
+  const isCompleted = (id: number) => {
+    return completed.some((workout) => workout.id === id);
+  };
+
   const value = useMemo(
     () => ({
       plan,
       saved,
+      completed,
       addToPlan,
       removeFromPlan,
       saveForLater,
       removeFromSaved,
+      markDone,
       isInPlan,
       isSaved,
+      isCompleted,
     }),
-    [plan, saved],
+    [plan, saved, completed],
   );
 
   return (
