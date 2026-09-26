@@ -30,7 +30,7 @@ FitLog lets you explore a library of 12 workouts covering every major muscle gro
 
 ## Live Demo
 
-
+https://fit-log-three-silk.vercel.app/
 
 ---
 
